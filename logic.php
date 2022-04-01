@@ -1,10 +1,16 @@
 <?php
 
-    // Don't display server errors 
-    ini_set("display_errors", "off");
-
-    // Initialize a database connection
-    $conn = mysqli_connect("remotemysql.com", "EZ1x6u9oNs", "q9jaSagigN", "EZ1x6u9oNs"");
+    //Get Heroku ClearDB connection information
+    $cleardb_url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+    $cleardb_server = $cleardb_url["host"];
+    $cleardb_username = $cleardb_url["user"];
+    $cleardb_password = $cleardb_url["pass"];
+    $cleardb_db = substr($cleardb_url["path"],1);
+    $active_group = 'default';
+    $query_builder = TRUE;
+    
+    // Connect to DB
+    $conn = mysqli_connect($cleardb_server, $cleardb_username, $cleardb_password, $cleardb_db);
 
     // Destroy if not possible to create a connection
     if(!$conn){
